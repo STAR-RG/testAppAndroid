@@ -1,0 +1,16 @@
+name: Build and Test
+on: [push]
+jobs:
+  androidTest:
+    runs-on: macOS-latest   
+    steps:
+      - uses: actions/checkout@v2
+      - name: Instrumentation Tests
+        uses: STAR-RG/android-emulator-runner@main 
+        with:
+          api-level: 29
+          arch: x86
+          disable-animations: true
+          adb-run-tests: adb shell am instrument -w -r    -e package com.example.android.testing.espresso.fragmentscenario -e debug false com.example.android.testing.espresso.FragmentScenarioSample.test/androidx.test.runner.AndroidJUnitRunner
+          install-command: ./gradlew installDebug installDebugAndroidTest
+          script: ./gradlew connectedAndroidTest --stacktrace
